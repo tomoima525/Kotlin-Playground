@@ -11,6 +11,7 @@ import com.github.kittinunf.fuel.httpGet
 import com.github.kittinunf.fuel.rx.rx_string
 import com.github.kittinunf.result.Result
 import io.reactivex.functions.Consumer
+import io.reactivex.schedulers.Schedulers
 import kotlinx.android.synthetic.main.activity_main.floatingActionButton
 import kotlinx.android.synthetic.main.content_main.editText
 import kotlin.properties.Delegates
@@ -41,13 +42,13 @@ class MainActivity : AppCompatActivity() {
      */
     fun bulletPoint1Immutability() {
         val i = 0
-        //i = 7 //error
+//        i = 7 //error
 
         var j = 0
         j = 17
 
         val k = listOf("1", "2", "3")
-        //k = listOf("4", "5", "6")
+//        k = listOf("4", "5", "6")
         logD(k)
 
         val l = mutableListOf("1", "2", "3")
@@ -78,7 +79,7 @@ class MainActivity : AppCompatActivity() {
         val nullableString: String? = null
 
         countCharacters("hello world")
-        //countCharacters(null)
+//        countCharacters(null)
 
         nullableString?.length
         nullableString?.let {
@@ -86,7 +87,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         val nullableTypeButNotnullString: String? = "Step 2, null safety"
+        nullableTypeButNotnullString?.length
         nullableTypeButNotnullString?.let {
+            nullableTypeButNotnullString.length
             logD(nullableTypeButNotnullString)
         }
     }
@@ -196,6 +199,13 @@ class MainActivity : AppCompatActivity() {
 
         logE(user)
         logE(address)
+
+        val newAddress = builderBuilder {
+            it.number = 999
+            it.road = "烏丸通"
+            it.zip = "400-5654"
+        }
+        logV(newAddress)
     }
 
     /**
@@ -224,13 +234,6 @@ class MainActivity : AppCompatActivity() {
         b.observableValue = 1
         b.observableValue = 2
         b.observableValue = 3
-
-        val newAddress = builderBuilder {
-            it.number = 999
-            it.road = "烏丸通"
-            it.zip = "400-5654"
-        }
-        logV(newAddress)
     }
 
     /**
@@ -241,7 +244,10 @@ class MainActivity : AppCompatActivity() {
      */
 
     fun bulletPoint8Conciseness(view: View, editText: EditText, pref: SharedPreferences) {
-        view.setOnClickListener { view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show() }
+        view.setOnClickListener {
+            view ->
+            Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show()
+        }
         editText.textChangedListener {
             onTextChanged { charSequence, _, _, _ ->
                 logE(charSequence)
@@ -270,6 +276,7 @@ class MainActivity : AppCompatActivity() {
     fun bulletPoint9Niceties() {
         val responses = "https://httpbin.org/get".httpGet().rx_string()
         responses
+                .subscribeOn(Schedulers.io())
                 .subscribe(Consumer {
                     when (it) {
                         is Result.Success -> logD(it.value)
