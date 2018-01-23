@@ -5,10 +5,12 @@ import com.github.kttinunf.playground.todo.model.Todo
 import com.github.kttinunf.playground.todo.reducer.todoReducer
 import com.github.kttinunf.playground.todo.repository.FakeTodoRepository
 import com.github.kttinunf.playground.todo.repository.TodoRepositoryType
+import com.github.kttinunf.playground.todo.state.AddTodoAction
 import com.github.kttinunf.playground.todo.state.FilterTodoAction
 import com.github.kttinunf.playground.todo.state.SetTodoAction
 import com.github.kttinunf.playground.todo.state.TodoListState
 import com.github.kttinunf.playground.todo.state.TodoState
+import com.github.kttinunf.playground.todo.state.ToggleTodoAction
 import io.reactivex.Observable
 
 class TodoViewModel(view: TodoContract.Input, repository: TodoRepositoryType = FakeTodoRepository()) : TodoContract.Output {
@@ -23,7 +25,11 @@ class TodoViewModel(view: TodoContract.Input, repository: TodoRepositoryType = F
         val filterTodos = view.filterTodos
                 .map(::FilterTodoAction)
 
-        states = Observable.mergeArray(firstLoad, filterTodos)
+        val toggleTodo = view.toggleTodoAtIndexes.map(::ToggleTodoAction)
+
+        val addTodo = view.addTodos.map(::AddTodoAction)
+
+        states = Observable.mergeArray(firstLoad, filterTodos, toggleTodo, addTodo)
                 .scan(TodoState(), ::todoReducer)
                 .skip(1)
                 .replay()

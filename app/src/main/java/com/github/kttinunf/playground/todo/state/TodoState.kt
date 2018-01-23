@@ -16,3 +16,5 @@ sealed class TodoAction
 
 class SetTodoAction(val items: List<TodoListState>) : TodoAction()
 class FilterTodoAction(val setFilter: TodoFilter) : TodoAction()
+class ToggleTodoAction(val index: Int) : TodoAction()
+class AddTodoAction(val text: String) : TodoAction()
