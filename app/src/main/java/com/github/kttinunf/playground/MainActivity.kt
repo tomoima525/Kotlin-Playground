@@ -49,13 +49,13 @@ class MainActivity : AppCompatActivity() {
 
         val k = listOf("1", "2", "3")
 //        k = listOf("4", "5", "6")
-        logD(k)
+//        logD(k)
 
         val l = mutableListOf("1", "2", "3")
         l.add("4")
         l.add("5")
         l.add("6")
-        logD(l)
+//        logD(l)
     }
 
     /**
@@ -83,14 +83,14 @@ class MainActivity : AppCompatActivity() {
 
         nullableString?.length
         nullableString?.let {
-            logD(it)
+//            logD(it)
         }
 
         val nullableTypeButNotnullString: String? = "Step 2, null safety"
         nullableTypeButNotnullString?.length
         nullableTypeButNotnullString?.let {
             nullableTypeButNotnullString.length
-            logD(nullableTypeButNotnullString)
+//            logD(nullableTypeButNotnullString)
         }
     }
 
@@ -107,7 +107,8 @@ class MainActivity : AppCompatActivity() {
 
     fun bulletPoint3Lambda() {
         val a = listOf(1, 2, 3, 4, 5)
-        doOnEach(a) { logV(it) }
+        doOnEach(a) { //logV(it)
+             }
     }
 
     /**
@@ -133,16 +134,16 @@ class MainActivity : AppCompatActivity() {
     fun bulletPoint4Extension() {
         class Foo {
             init {
-                logE("i'm in foo")
+//                logE("i'm in foo")
             }
         }
 
         val f = Foo()
         val i = 20.fib()
         val j = null ?: 20
-        logD(i)
-        logD(j)
-        logE("Hello world")
+//        logD(i)
+//        logD(j)
+//        logE("Hello world")
     }
 
 
@@ -165,9 +166,9 @@ class MainActivity : AppCompatActivity() {
     fun bulletPoint5Functional() {
         val t = doThingsFunctionally()
 
-        logV(t.first)
-        logD(t.second)
-        logE(t.third)
+        //logV(t.first)
+        //logD(t.second)
+        //logE(t.third)
     }
 
     /**
@@ -197,15 +198,15 @@ class MainActivity : AppCompatActivity() {
     fun bulletPoint6DataClass() {
         val (user, address) = dataClassIsFun()
 
-        logE(user)
-        logE(address)
+//        logE(user)
+//        logE(address)
 
         val newAddress = builderBuilder {
             it.number = 999
             it.road = "烏丸通"
             it.zip = "400-5654"
         }
-        logV(newAddress)
+//        logV(newAddress)
     }
 
     /**
@@ -217,11 +218,11 @@ class MainActivity : AppCompatActivity() {
 
     class Bar {
         val lazyValue by lazy {
-            logD("This will be created on first use")
+//            logD("This will be created on first use")
         }
 
         var observableValue by Delegates.observable(-999) { p, old, new ->
-            logE("Value was changed from $old -> $new")
+//            logE("Value was changed from $old -> $new")
         }
     }
 
@@ -248,11 +249,11 @@ class MainActivity : AppCompatActivity() {
             view ->
             Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG).setAction("Action", null).show()
         }
-        editText.textChangedListener {
-            onTextChanged { charSequence, _, _, _ ->
-                logE(charSequence)
-            }
-        }
+//        editText.textChangedListener {
+//            onTextChanged { charSequence, _, _, _ ->
+//                logE(charSequence)
+//            }
+//        }
 
         //usage
         pref.edit {
@@ -279,13 +280,11 @@ class MainActivity : AppCompatActivity() {
                 .subscribeOn(Schedulers.io())
                 .subscribe(Consumer {
                     when (it) {
-                        is Result.Success -> logD(it.value)
-                        is Result.Failure -> logE(it.error)
+                        is Result.Success -> {} //logD(it.value)
+                        is Result.Failure -> {}//logE(it.error)
                     }
                 })
     }
 }
 
 fun powerOf2(i: Int) = i * i
-
-
