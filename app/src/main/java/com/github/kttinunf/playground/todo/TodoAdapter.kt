@@ -33,7 +33,7 @@ class TodoViewHolder(private val binding: ListItemTodoBinding) : RecyclerView.Vi
                 true
             }
 
-            emitter.setCancellable { view.setOnClickListener(null) }
+            emitter.setCancellable { view.setOnLongClickListener(null) }
         }
     }
 
@@ -69,10 +69,10 @@ class TodoAdapter : RecyclerView.Adapter<TodoViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup?, viewType: Int): TodoViewHolder {
         val layoutInflater = LayoutInflater.from(parent?.context)
         val binding = ListItemTodoBinding.inflate(layoutInflater, parent, false)
-        val holder = TodoViewHolder(binding)
-        holder.itemClicks.subscribe(itemToggleSubject::onNext).addTo(compositeDisposable)
-        holder.itemLongClicks.subscribe(itemDeleteSubject::onNext).addTo(compositeDisposable)
-        return holder
+        return TodoViewHolder(binding).apply {
+            itemClicks.subscribe(itemToggleSubject::onNext).addTo(compositeDisposable)
+            itemLongClicks.subscribe(itemDeleteSubject::onNext).addTo(compositeDisposable)
+        }
     }
 
     override fun onBindViewHolder(holder: TodoViewHolder, position: Int) {

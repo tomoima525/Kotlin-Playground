@@ -8,9 +8,15 @@ enum class TodoFilter {
 
 data class TodoState(
         val filter: TodoFilter = TodoFilter.All,
-        val visibles: List<TodoListState> = emptyList(),
-        val alls: List<TodoListState> = emptyList()
-)
+        val alls: List<TodoListState> = emptyList()) {
+    val visibles: List<TodoListState> = alls.filter { it.isVisibleWithFilter(filter) }
+}
+
+private fun TodoListState.isVisibleWithFilter(filter: TodoFilter) = when(filter) {
+    TodoFilter.All -> true
+    TodoFilter.Active -> !completed
+    TodoFilter.Completed -> completed
+}
 
 sealed class TodoAction
 
