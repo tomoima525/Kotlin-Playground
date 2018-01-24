@@ -95,6 +95,7 @@ class TodoActivity : AppCompatActivity(), TodoContract.Input {
     override fun onDestroy() {
         super.onDestroy()
         disposeBag.dispose()
+        adapter.dispose()
     }
 
     private fun createAlertDialogWith(binding: DialogAddTodoBinding, handler: (String) -> Unit): AlertDialog {
@@ -119,8 +120,7 @@ class TodoActivity : AppCompatActivity(), TodoContract.Input {
 
     override val toggleTodoAtIndexes: Observable<Int> by lazy { adapter.itemToggles }
 
-    override val deleteTodoAtIndexes: Observable<Int>
-        get() = TODO("not implemented") //To change initializer of created properties use File | Settings | File Templates.
+    override val deleteTodoAtIndexes: Observable<Int> by lazy { adapter.itemDeletes }
 
     override val filterTodos: Observable<TodoFilter> by lazy {
         Observable.create<TodoFilter> { emitter ->

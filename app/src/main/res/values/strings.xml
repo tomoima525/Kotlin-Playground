@@ -4,8 +4,10 @@
 
     <string name="title_todo">Todo</string>
 
-    <string name="no_tasks_all">You have no TO-DOs!</string>
-    <string name="no_tasks_add">Add a TO-DO item +</string>
+    <string name="no_tasks_all">You have no Todos!</string>
+    <string name="no_tasks_active">You have no Active Todos!</string>
+    <string name="no_tasks_completed">Yey!! You finished all of your Todos!</string>
+    <string name="no_tasks_add">Add a Todo item +</string>
 
     <string name="menu_add">Add</string>
 

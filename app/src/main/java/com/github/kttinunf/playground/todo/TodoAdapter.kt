@@ -25,7 +25,17 @@ class TodoViewHolder(private val binding: ListItemTodoBinding) : RecyclerView.Vi
         }
     }
 
-    val itemLongClicks by lazy { Observable.empty<Int>() }
+    val itemLongClicks by lazy {
+        Observable.create<Int> { emitter ->
+            val view = binding.root
+            view.setOnLongClickListener {
+                emitter.onNext(adapterPosition)
+                true
+            }
+
+            emitter.setCancellable { view.setOnClickListener(null) }
+        }
+    }
 
     fun bind(state: TodoListState) {
         with(binding) {
@@ -45,6 +55,9 @@ class TodoAdapter : RecyclerView.Adapter<TodoViewHolder>() {
     private val itemToggleSubject = PublishSubject.create<Int>()
     val itemToggles = itemToggleSubject.hide()
 
+    private val itemDeleteSubject = PublishSubject.create<Int>()
+    val itemDeletes = itemDeleteSubject.hide()
+
     private val compositeDisposable = CompositeDisposable()
 
     private var items by Delegates.observable(emptyList<TodoListState>()) { _, _, _ ->
@@ -58,6 +71,7 @@ class TodoAdapter : RecyclerView.Adapter<TodoViewHolder>() {
         val binding = ListItemTodoBinding.inflate(layoutInflater, parent, false)
         val holder = TodoViewHolder(binding)
         holder.itemClicks.subscribe(itemToggleSubject::onNext).addTo(compositeDisposable)
+        holder.itemLongClicks.subscribe(itemDeleteSubject::onNext).addTo(compositeDisposable)
         return holder
     }
 

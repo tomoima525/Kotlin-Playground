@@ -1,6 +1,7 @@
 package com.github.kttinunf.playground.todo.reducer
 
 import com.github.kttinunf.playground.todo.state.AddTodoAction
+import com.github.kttinunf.playground.todo.state.DeleteTodoAction
 import com.github.kttinunf.playground.todo.state.FilterTodoAction
 import com.github.kttinunf.playground.todo.state.SetTodoAction
 import com.github.kttinunf.playground.todo.state.TodoAction
@@ -38,6 +39,18 @@ fun todoReducer(state: TodoState, action: TodoAction): TodoState {
 
             val newAlls = state.alls.toMutableList()
             newAlls.add(newTodo)
+
+            val visibles = newAlls.filter { it.isVisibleWithFilter(state.filter) }
+            TodoState(state.filter, visibles, newAlls)
+        }
+        is DeleteTodoAction -> {
+            val index = action.index
+            val deleted = state.visibles[index]
+
+            val newAlls = state.alls.toMutableList().apply {
+                val newIndex = indexOf(deleted)
+                removeAt(newIndex)
+            }
 
             val visibles = newAlls.filter { it.isVisibleWithFilter(state.filter) }
             TodoState(state.filter, visibles, newAlls)
